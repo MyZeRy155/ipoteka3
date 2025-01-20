@@ -13,7 +13,7 @@ else:
     print("Срок ипотеки: " + srokIpoteki + mesyacev)
 
 print("Введите сумма ипотеки:")
-sumIpoteki = input()
+sumIpoteki = float(input())
 print("Сумма ипотеки: " + sumIpoteki)
 
 print("Введите процентную ставку:")
@@ -22,11 +22,11 @@ print("Процентная ставка: " + procentStavka)
 
 mesyacniPlatezh = float(sumIpoteki) * float(procentStavka) / 12
 
-obshiDolgProcenta = mesyacniPlatezh * float(srokIpoteki)
+obshiDolg = mesyacniPlatezh * float(srokIpoteki)
 
-obshiDolg = float(sumIpoteki) + obshiDolgProcenta
+##obshiDolg = float(sumIpoteki) + obshiDolgProcenta
 
 print("Месячный платеж составит: " + str(mesyacniPlatezh) +
       "\nОбщий долг по ипотеки составит: "
       + str(obshiDolg)
-      + "\nОбщая переплата по процентам составит: " + str(obshiDolgProcenta))
+      + "\nОбщая переплата по процентам составит: " + str(obshiDolg - sumIpoteki))
