@@ -1,32 +1,46 @@
+from import_data import *
 print("Считаем ипотеку \n"
       "Для того чтобы высчитать нужную вам информацию, нужно знать следующее:\n1.Срок ипотеки\n2.Сумма Ипотеки\n3.Процентная ставка")
 mesyac = " месяц"
 mesyaca = " месяца"
 mesyacev = " месяцев"
+
+
 print("Введите срок ипотеки:")
-srokIpoteki = input()
-if srokIpoteki.endswith("1") and srokIpoteki!= "11" and srokIpoteki != "111" and srokIpoteki != "211" and srokIpoteki != "311":
-    print("Срок ипотеки: " + srokIpoteki + mesyac)
-elif srokIpoteki.endswith("2") or srokIpoteki.endswith("3") or srokIpoteki.endswith("4"):
-    print("Срок ипотеки: " + srokIpoteki + mesyaca)
+str_srokIpoteki = input()
+srokIpoteki = float(str_srokIpoteki)
+
+
+if str_srokIpoteki.endswith("1") and str_srokIpoteki!= "11" and str_srokIpoteki != "111" and str_srokIpoteki != "211" and str_srokIpoteki != "311":
+    print("Срок ипотеки: " + str_srokIpoteki + mesyac)
+elif str_srokIpoteki.endswith("2") or str_srokIpoteki.endswith("3") or str_srokIpoteki.endswith("4"):
+    print("Срок ипотеки: " + str_srokIpoteki + mesyaca)
 else:
-    print("Срок ипотеки: " + srokIpoteki + mesyacev)
+    print("Срок ипотеки: " + str_srokIpoteki + mesyacev)
+
 
 print("Введите сумма ипотеки:")
-sumIpoteki = float(input())
-print("Сумма ипотеки: " + sumIpoteki)
+str_sumIpoteki = float(input())
+sumIpoteki = float(str_sumIpoteki)
+print(f"Сумма ипотеки: {str_sumIpoteki}")
+
 
 print("Введите процентную ставку:")
-procentStavka = input()
-print("Процентная ставка: " + procentStavka)
+procentStavka = float(input())
+print(f"Процентная ставка:   {procentStavka}")
 
-mesyacniPlatezh = float(sumIpoteki) * float(procentStavka) / 12
 
-obshiDolg = mesyacniPlatezh * float(srokIpoteki)
+mesyacniPlatezh = sumIpoteki * float(procentStavka) / 12
+overpayment = mesyacniPlatezh * srokIpoteki
+obshiDolg = overpayment + sumIpoteki
+
+
 
 ##obshiDolg = float(sumIpoteki) + obshiDolgProcenta
 
-print("Месячный платеж составит: " + str(mesyacniPlatezh) +
-      "\nОбщий долг по ипотеки составит: "
-      + str(obshiDolg)
-      + "\nОбщая переплата по процентам составит: " + str(obshiDolg - sumIpoteki))
+print(f"""Месячный платеж составит: {mesyacniPlatezh} 
+      \nОбщий долг по ипотеки составит: 
+       {obshiDolg}
+       \nОбщая переплата по процентам составит: {overpayment}""")
+
+add_ipoteka(procentStavka, str_sumIpoteki, str_srokIpoteki, mesyacniPlatezh, overpayment, obshiDolg)
