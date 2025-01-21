@@ -12,3 +12,12 @@ def add_ipoteka(procent_stavka, summa_ipoteki, srok_ipoteki, month_payment, over
     ipoteka = Ipoteka(procent_stavka=procent_stavka, summa_ipoteki=summa_ipoteki, srok_ipoteki=srok_ipoteki, month_payment=month_payment, overpayment=overpayment, obshiDolg=obshiDolg)
     session.add(ipoteka)
     session.commit()
+
+def get_ipoteka():
+    session = get_session()
+    ipoteka = session.query(Ipoteka).all()
+    return ipoteka
+
+all_ipotekas = get_ipoteka()
+for ipoteka in all_ipotekas:
+    print(ipoteka.id, ipoteka.procent_stavka, ipoteka.summa_ipoteki, ipoteka.srok_ipoteki, ipoteka.month_payment, ipoteka.overpayment, ipoteka.obshiDolg)
