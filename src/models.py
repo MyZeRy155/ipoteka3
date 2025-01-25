@@ -7,7 +7,6 @@ class BaseEntity(DeclarativeBase):
 class Client(BaseEntity):
     __tablename__ = 'client'
 
-
 class Ipoteka(BaseEntity):
     __tablename__ = 'mortgage'
 
