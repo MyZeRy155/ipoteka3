@@ -7,17 +7,17 @@ def add_client():
     session.add(client)
     session.commit()
 
-def add_ipoteka(procent_stavka, summa_ipoteki, srok_ipoteki, month_payment, overpayment, obshiDolg):
+def add_ipoteka(interest_rate, mortgage_amount, mortgage_term, monhly_payment, overpayment, total_debt):
     session = get_session()
-    ipoteka = Ipoteka(procent_stavka=procent_stavka, summa_ipoteki=summa_ipoteki, srok_ipoteki=srok_ipoteki, month_payment=month_payment, overpayment=overpayment, obshiDolg=obshiDolg)
-    session.add(ipoteka)
+    mortgages = Ipoteka(interest_rate=interest_rate, mortgage_amount=mortgage_amount, mortgage_term=mortgage_term, monhly_payment=monhly_payment, overpayment=overpayment, total_debt=total_debt)
+    session.add(mortgages)
     session.commit()
 
 def get_ipoteka():
     session = get_session()
-    ipoteka = session.query(Ipoteka).all()
-    return ipoteka
+    mortgages = session.query(Ipoteka).all()
+    return mortgages
 
 all_ipotekas = get_ipoteka()
-for ipoteka in all_ipotekas:
-    print(ipoteka.id, ipoteka.procent_stavka, ipoteka.summa_ipoteki, ipoteka.srok_ipoteki, ipoteka.month_payment, ipoteka.overpayment, ipoteka.obshiDolg)
+for mortgage in all_ipotekas:
+    print(mortgage.id, mortgage.procent_stavka, mortgage.summa_ipoteki, mortgage.srok_ipoteki, mortgage.month_payment, mortgage.overpayment, mortgage.obshiDolg)

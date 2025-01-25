@@ -1,25 +1,23 @@
-from sqlalchemy import Column, String, Integer, Float
+from sqlalchemy import Column, Integer, Float
 from sqlalchemy.orm import DeclarativeBase
 
+class BaseEntity(DeclarativeBase):
+    id = Column(Integer, primary_key=True, autoincrement=True)
 
-
-class Base(DeclarativeBase):
-    pass
-
-class Client(Base):
+class Client(BaseEntity):
     __tablename__ = 'client'
-    id = Column(Integer, primary_key=True, autoincrement=True)
 
-class Ipoteka(Base):
-    __tablename__ = 'ipoteka'
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    procent_stavka = Column(Float)
-    summa_ipoteki = Column(Float)
-    srok_ipoteki = Column(Integer)
-    month_payment = Column(Float)
-    obshiDolg = Column(Float)
+
+class Ipoteka(BaseEntity):
+    __tablename__ = 'mortgage'
+
+    interest_rate = Column(Float)
+    mortgage_amount = Column(Float)
+    mortgage_term = Column(Integer)
+    monhly_payment = Column(Float)
+    total_debt = Column(Float)
     overpayment = Column(Float, nullable=True)
 
-class PaymentIpoteka(Base):
+class PaymentIpoteka(BaseEntity):
     __tablename__ = 'payment'
-    id = Column(Integer, primary_key=True, autoincrement=True)
+
