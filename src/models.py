@@ -13,8 +13,8 @@ class Client(BaseEntity):
 
 class User(BaseEntity):
     __tablename__ = 'user'
-    username = Column(String, unique=True)
-    password = Column(String, unique=True)
+    username = Column(String)
+    password = Column(String)
     created_at = Column(DateTime, default=datetime.now())
 
 
