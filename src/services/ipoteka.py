@@ -1,3 +1,6 @@
+hundred_percent = 100
+year = 12
+
 def mortgage_calculation(interest_rate: float, mortgage_amount: float, mortgage_term: int) -> tuple[float, float, float]:
 
     monhly_payment = calc_monthly_payment(interest_rate, mortgage_amount, mortgage_term)
@@ -13,7 +16,7 @@ def calc_overpayment(total_debt: float, mortgage_amount: float) -> float:
 
 def calc_monthly_payment(interest_rate: float, mortgage_amount: float, mortgage_term: int) -> float:
     # Рассчитываем месячную процентную ставку
-    monthly_rate = interest_rate / 100 / 12
+    monthly_rate = interest_rate / hundred_percent / year
 
     # Общее количество платежей
     amount_ofpayments = mortgage_term

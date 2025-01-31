@@ -1,11 +1,91 @@
 import tkinter as tkgui
-from tkinter import ttk
+from tkinter import ttk, messagebox
+
+
+from repository.ipoteka import *
 from services import mortgage_calculation
 
-class MainInterface:
-    def __init__(self):
-        ## Основное окно
-        self.root = tkgui.Tk()
+class AuthWindow:
+    def __init__(self, auth_root):
+        self.root = auth_root
+        self.auth_window = tkgui.Toplevel(auth_root)
+        self.auth_window.title("Авторизация")
+
+        # Поле для логина
+        tkgui.Label(self.auth_window, text="Логин:").grid(row=0, column=0, padx=10, pady=10)
+        self.entry_username = ttk.Entry(self.auth_window)
+        self.entry_username.grid(row=0, column=1, padx=10, pady=10)
+
+        # Поле для пароля
+        tkgui.Label(self.auth_window, text="Пароль:").grid(row=1, column=0, padx=10, pady=10)
+        self.entry_password = ttk.Entry(self.auth_window, show="*")
+        self.entry_password.grid(row=1, column=1, padx=10, pady=10)
+
+        # Кнопка авторизации
+        tkgui.Button(self.auth_window, text="Войти", command=self.login).grid(row=2, column=0, padx=10, pady=10)
+
+        # Кнопка перехода к регистрации
+        tkgui.Button(self.auth_window, text="Зарегистрироваться", command=self.open_registration).grid(row=2, column=1, padx=10, pady=10)
+
+    def login(self):
+        bool_flag = login_in(self.entry_username.get(), self.entry_password.get())
+        if not bool_flag:
+            messagebox.showerror(title="Ошибка", message="Неверный логин или пароль")
+        else:
+            messagebox.showinfo(title="Авторизация", message="Авторизация прошла успешно!")
+            self.auth_window.destroy()  # Закрыть окно авторизации
+            calc_window = CalcMortgageInterface(tkgui.Tk())
+            calc_window.root.mainloop()
+
+
+
+    def open_registration(self):
+        self.auth_window.destroy()  # Закрыть окно авторизации
+
+        RegistrationWindow(self.root)  # Открыть окно регистрации
+
+
+class RegistrationWindow:
+    def __init__(self, register_root):
+        self.root = register_root
+        self.registration_window = tkgui.Toplevel(register_root)
+        self.registration_window.title("Регистрация")
+
+        # Поле для логина
+        tkgui.Label(self.registration_window, text="Логин:").grid(row=0,
+                                                                  column=0,
+                                                                  padx=10,
+                                                                  pady=10)
+        self.entry_username = ttk.Entry(self.registration_window)
+        self.entry_username.grid(row=0,
+                                 column=1,
+                                 padx=10,
+                                 pady=10)
+        # Поле для пароля
+        tkgui.Label(self.registration_window, text="Пароль:").grid(row=1,
+                                                                  column=0,
+                                                                  padx=10,
+                                                                  pady=10)
+        self.entry_password = ttk.Entry(self.registration_window)
+        self.entry_password.grid(row=1,
+                                 column=1,
+                                 padx=10,
+                                 pady=10)
+        tkgui.Button(self.registration_window, text="Зарегистрироваться", command=self.registration).grid(row=2,
+                                                                               column=0,
+                                                                               columnspan=2,
+                                                                               padx=10,
+                                                                               pady=10)
+
+    def registration(self):
+        register(self.entry_username.get(),self.entry_password.get())
+        self.registration_window.destroy()  # Закрыть окно авторизации
+        AuthWindow(self.root)
+
+
+class CalcMortgageInterface:
+    def __init__(self, root3):
+        self.root = root3
         self.root.geometry("600x300+100+200")
         self.root.title("Калькулятор ипотеки")
 
@@ -53,6 +133,9 @@ class MainInterface:
         self.field_mortgage_amount.delete(0, tkgui.END)
         self.field_mortgage_term.delete(0, tkgui.END)
 
+
 if __name__ == "__main__":
-    main_interface = MainInterface()
-    main_interface.root.mainloop()
+    root = tkgui.Tk()
+    root.withdraw()
+    auth_window = AuthWindow(root)
+    root.mainloop()
