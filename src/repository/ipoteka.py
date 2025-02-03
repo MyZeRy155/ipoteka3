@@ -1,7 +1,12 @@
 from db_utils import get_session
 from models import *
-import bcrypt
 import hashlib
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path="config.env")
+
+protected_salt = os.getenv('PROTECTED_SALT')
 
 from datetime import datetime
 
@@ -13,9 +18,9 @@ def add_client():
     session.commit()
 
 
-def add_mortgage(interest_rate, mortgage_amount, mortgage_term, monhly_payment, overpayment, total_debt):
+def add_mortgage(interest_rate, mortgageamount, mortgage_term, monhly_payment, overpayment, total_debt):
     session = get_session()
-    mortgages = Ipoteka(interest_rate=interest_rate, mortgage_amount=mortgage_amount, mortgage_term=mortgage_term, monhly_payment=monhly_payment, overpayment=overpayment, total_debt=total_debt)
+    mortgages = Ipoteka(interest_rate=interest_rate, mortgageamount=mortgageamount, mortgage_term=mortgage_term, monhly_payment=monhly_payment, overpayment=overpayment, total_debt=total_debt)
     session.add(mortgages)
     session.commit()
 
@@ -32,14 +37,14 @@ for mortgage in all_mortgage:
 
    ## хешируем пароль
 def hash_password(password:str):
-    salt = "bcrypt.gensalt(rounds=12)"
+    salt = protected_salt
     password_salt = password + salt
     hashed_password = hashlib.md5(password_salt.encode())
     return hashed_password.hexdigest()
 
     ## проверяем пароль
 def check_password(password:str, hash_pass):
-     salt = "bcrypt.gensalt(rounds=12)"
+     salt = protected_salt
      password_salt = password + salt
      decrypted_text = hashlib.md5(password_salt.encode()).hexdigest()
      if hash_pass != decrypted_text:

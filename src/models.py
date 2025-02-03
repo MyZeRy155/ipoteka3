@@ -13,7 +13,7 @@ class Client(BaseEntity):
 
 class User(BaseEntity):
     __tablename__ = 'user'
-    username = Column(String)
+    username = Column(String, unique=True, nullable=False)
     password = Column(String)
     created_at = Column(DateTime, default=datetime.now())
 
@@ -21,7 +21,7 @@ class User(BaseEntity):
 class Ipoteka(BaseEntity):
     __tablename__ = 'mortgage'
     interest_rate = Column(Float)
-    mortgage_amount = Column(Float)
+    mortgageamount = Column(Float)
     mortgage_term = Column(Integer)
     monhly_payment = Column(Float)
     total_debt = Column(Float)
