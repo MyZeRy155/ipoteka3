@@ -1,1 +1,1 @@
-from ipoteka import *
+from .ipoteka import *
