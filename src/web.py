@@ -1,10 +1,9 @@
-from typing import Union
 from fastapi import FastAPI
-from pydantic import BaseModel
 from repository.ipoteka import register, login_in
 from services.ipoteka import mortgage_calculation
 from dotenv import load_dotenv
 import os
+from services.web_models import LoginRegisterModel, MortgageCalculationModel, MortgageResultModel
 
 load_dotenv(dotenv_path="../config.env")
 
@@ -12,26 +11,27 @@ app = FastAPI()
 
 db_url = os.getenv('DATABASE_URL')
 
-class Item(BaseModel):
-    name: str
-    price: float
-    is_offer: Union[bool, None] = None
-
 
 @app.post("/register")
-async def web_register(username: str, password: str):
-    return register(username, password)
+async def web_register(user: LoginRegisterModel):
+    return register(user.username, user.password)
 
 @app.post("/login")
-async def web_login(username: str, password: str):
-    return login_in(username, password)
+async def web_login(user: LoginRegisterModel):
+    return login_in(user.username, user.password)
 
-@app.post("/mortgage/calculate")
-async def handle_mortgage(interest_rate: float, mortgage_amount:float, mortgage_term:int) -> tuple[float, float, float]:
-    monhly_payment, total_debt, overpayment = mortgage_calculation(
-        interest_rate, mortgage_amount, mortgage_term
+@app.post("/mortgage/calculate", response_model=MortgageResultModel)
+async def handle_mortgage(data: MortgageCalculationModel):
+    monthly_payment, total_debt, overpayment = mortgage_calculation(
+        data.interest_rate,
+        data.mortgage_amount,
+        data.mortgage_term
     )
-    return monhly_payment, total_debt, overpayment
+    return {
+    "monthly_payment": monthly_payment,
+    "total_debt": total_debt,
+    "overpayment": overpayment
+}
 
 if __name__ == "__main__":
     import uvicorn
