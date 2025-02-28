@@ -28,10 +28,6 @@ def get_mortgage():
     mortgages = session.query(Ipoteka).all()
     return mortgages
 
-all_mortgage = get_mortgage()
-for mortgage in all_mortgage:
-    print(mortgage.id, mortgage.interest_rate, mortgage.mortgageamount, mortgage.mortgage_term, mortgage.monhly_payment, mortgage.overpayment, mortgage.total_debt)
-
 def hash_password(password: str):
     salt = protected_salt
     password_salt = password + salt
@@ -57,8 +53,6 @@ def register(username: str, password: str | None, is_temporary: bool = False):
             raise ValueError("Пароль должен быть указан")
         hash_pass = hash_password(password)
         user = User(username=username, password=hash_pass, is_temporary=is_temporary)
-        if is_temporary:
-            user.password_created_at = datetime.now(timezone.utc)
         try:
             session.add(user)
             session.commit()
@@ -79,13 +73,9 @@ def login_in(username: str, password: str):
             raise InvalidCredentialsError(detail="Пользователь не найден")
 
         if user.is_temporary:
-            if user.password_created_at is None:
-                pass  # Пароль временный, но неизвестно когда создан и не может быть проверен
-            else:
-                # Вычисляем количество дней, прошедших с момента создания пароля
-                days_passed = (datetime.now(timezone.utc) - user.password_created_at).days
-                if days_passed > 30:
-                    raise TemporaryPasswordExpiredError()
+            days_passed = (datetime.now() - user.created_at).days
+            if days_passed > 30:
+                raise TemporaryPasswordExpiredError()
 
         if not check_password(password, user.password):
             raise InvalidCredentialsError(detail="Неверный пароль")

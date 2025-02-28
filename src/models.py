@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, Float, String, DateTime, Boolean
 from sqlalchemy.orm import DeclarativeBase
+from datetime import datetime
 
 class BaseEntity(DeclarativeBase):
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -16,7 +17,7 @@ class User(BaseEntity):
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     is_temporary = Column(Boolean, default=True, server_default="true", nullable=False)
-    password_created_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime, nullable=True, default=datetime.now())
 
 
 class Ipoteka(BaseEntity):

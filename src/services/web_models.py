@@ -2,9 +2,9 @@ from pydantic import BaseModel, Field, model_validator
 
 
 class BaseRegisterModel(BaseModel):
-    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["Create Username"])
-    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["Create password like -aA!@$53`~pass"])
-    approve_password: str = Field(description="Confirm your password", min_length=6, max_length=20, examples=["Create password like -aA!@$53`~pass"])
+    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["username"])
+    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["password"])
+    approve_password: str = Field(description="Confirm your password", min_length=6, max_length=20, examples=["password"])
 
     @model_validator(mode="after")
     def check_passwords_match(self):
@@ -18,9 +18,9 @@ class RegisterModel(BaseRegisterModel):
 
 
 class RegisterTemporaryModel(BaseModel):
-    username: str = Field(description="Create Username or your Personality with temporary password", min_length=6, max_length=20, examples=["Create Username"])
-    temporary_password: str = Field(description="Use your temporary password", min_length=6, max_length=20, examples=["Create temporary password like -aA!@$53`~pass"])
-    approve_password: str = Field(description="Confirm your temporary password", min_length=6, max_length=20, examples=["Create temporary password like -aA!@$53`~pass"])
+    username: str = Field(description="Create Username or your Personality with temporary password", min_length=6, max_length=20, examples=["username"])
+    temporary_password: str = Field(description="Use your temporary password", min_length=6, max_length=20, examples=["temp_password"])
+    approve_password: str = Field(description="Confirm your temporary password", min_length=6, max_length=20, examples=["temp_password"])
 
     @model_validator(mode="after")
     def check_passwords_match(self):
@@ -30,8 +30,8 @@ class RegisterTemporaryModel(BaseModel):
 
 
 class LoginModel(BaseModel):
-    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["Your Username"])
-    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["aA!@$53`~pass"])
+    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["username"])
+    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["password"])
 
 
 class MortgageCalculationModel(BaseModel):
