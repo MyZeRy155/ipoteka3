@@ -2,7 +2,7 @@ import tkinter as tkgui
 from tkinter import ttk, messagebox
 
 
-from repository.ipoteka import *
+from repository.ipoteka import register, login_in
 from services import mortgage_calculation
 
 class AuthWindow:

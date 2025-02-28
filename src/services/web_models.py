@@ -1,13 +1,44 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
-class LoginRegisterModel(BaseModel):
-    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["Your Personality"])
-    password: str = Field(description="Probably you want create strong password or enter your account", min_length=6, max_length=20, examples=["aA!@$53`~pass"])
+
+class BaseRegisterModel(BaseModel):
+    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["Create Username"])
+    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["Create password like -aA!@$53`~pass"])
+    approve_password: str = Field(description="Confirm your password", min_length=6, max_length=20, examples=["Create password like -aA!@$53`~pass"])
+
+    @model_validator(mode="after")
+    def check_passwords_match(self):
+        if self.password != self.approve_password:
+            raise ValueError("Пароль и подтверждение пароля должны совпадать")
+        return self
+
+
+class RegisterModel(BaseRegisterModel):
+    pass
+
+
+class RegisterTemporaryModel(BaseModel):
+    username: str = Field(description="Create Username or your Personality with temporary password", min_length=6, max_length=20, examples=["Create Username"])
+    temporary_password: str = Field(description="Use your temporary password", min_length=6, max_length=20, examples=["Create temporary password like -aA!@$53`~pass"])
+    approve_password: str = Field(description="Confirm your temporary password", min_length=6, max_length=20, examples=["Create temporary password like -aA!@$53`~pass"])
+
+    @model_validator(mode="after")
+    def check_passwords_match(self):
+        if self.temporary_password != self.approve_password:
+            raise ValueError("Пароль и подтверждение пароля должны совпадать")
+        return self
+
+
+class LoginModel(BaseModel):
+    username: str = Field(description="Username or your Personality", min_length=6, max_length=20, examples=["Your Username"])
+    password: str = Field(description="Use your password", min_length=6, max_length=20, examples=["aA!@$53`~pass"])
+
 
 class MortgageCalculationModel(BaseModel):
     mortgage_amount: float = Field(description="Сумма кредита", examples=[100000])
     mortgage_term: int = Field(description="Срок кредита в месяцах", examples=[36])
     interest_rate: float = Field(description="Процентная ставка", examples=[10])
+
 
 class MortgageResultModel(BaseModel):
     total_debt: float = Field(description="Общий долг", examples=[100000])
