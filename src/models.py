@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, DateTime
+from sqlalchemy import Column, Integer, Float, String, DateTime, Boolean
 from sqlalchemy.orm import DeclarativeBase
 from datetime import datetime
 
@@ -13,9 +13,11 @@ class Client(BaseEntity):
 
 class User(BaseEntity):
     __tablename__ = 'user'
+
     username = Column(String, unique=True, nullable=False)
-    password = Column(String)
-    created_at = Column(DateTime, default=datetime.now())
+    password = Column(String, nullable=False)
+    is_temporary = Column(Boolean, default=True, server_default="true", nullable=False)
+    created_at = Column(DateTime, nullable=True, default=datetime.now())
 
 
 class Ipoteka(BaseEntity):
@@ -29,5 +31,3 @@ class Ipoteka(BaseEntity):
 
 class PaymentIpoteka(BaseEntity):
     __tablename__ = 'payment'
-
-
